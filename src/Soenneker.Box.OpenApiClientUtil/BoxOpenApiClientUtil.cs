@@ -14,7 +14,7 @@ using Soenneker.Utils.AsyncSingleton;
 
 namespace Soenneker.Box.OpenApiClientUtil;
 
-///<inheritdoc cref="IBoxOpenApiClientUtil"/>
+/// <inheritdoc cref="IBoxOpenApiClientUtil"/>
 public sealed class BoxOpenApiClientUtil : IBoxOpenApiClientUtil
 {
     private readonly AsyncSingleton<BoxOpenApiClient> _client;
