@@ -11,9 +11,9 @@ namespace Soenneker.Box.OpenApiClientUtil.Abstract;
 public interface IBoxOpenApiClientUtil: IDisposable, IAsyncDisposable
 {
     /// <summary>
-    /// Gets the value.
+    /// Returns the configured box Open API Client used by the box open api client.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task containing the result of the operation.</returns>
+    /// <param name="cancellationToken">Token used to cancel the operation.</param>
+    /// <returns>A task whose result is the requested box Open API Client.</returns>
     ValueTask<BoxOpenApiClient> Get(CancellationToken cancellationToken = default);
 }
