@@ -11,7 +11,7 @@ namespace Soenneker.Box.OpenApiClientUtil.Registrars;
 public static class BoxOpenApiClientUtilRegistrar
 {
     /// <summary>
-    /// Adds <see cref="BoxOpenApiClientUtil"/> as a singleton service. <para/>
+    /// Adds <see cref="IBoxOpenApiClientUtil"/> and its HTTP-client provider as singleton services.
     /// </summary>
     /// <param name="services">Service collection that receives the registration.</param>
     /// <returns>The same service collection, so additional registrations can be chained.</returns>
@@ -24,7 +24,7 @@ public static class BoxOpenApiClientUtilRegistrar
     }
 
     /// <summary>
-    /// Adds <see cref="BoxOpenApiClientUtil"/> as a scoped service. <para/>
+    /// Adds <see cref="IBoxOpenApiClientUtil"/> and its HTTP-client provider as scoped services.
     /// </summary>
     /// <param name="services">Service collection that receives the registration.</param>
     /// <returns>The same service collection, so additional registrations can be chained.</returns>
