@@ -1,19 +1,19 @@
-using Soenneker.Box.OpenApiClient;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Soenneker.Box.OpenApiClient;
 
 namespace Soenneker.Box.OpenApiClientUtil.Abstract;
 
 /// <summary>
-/// Exposes a cached OpenAPI client instance.
+/// Provides a configured, reusable Box OpenAPI client.
 /// </summary>
-public interface IBoxOpenApiClientUtil: IDisposable, IAsyncDisposable
+public interface IBoxOpenApiClientUtil : IDisposable, IAsyncDisposable
 {
     /// <summary>
-    /// Returns the configured box Open API Client used by the box open api client.
+    /// Gets the cached generated client for this utility instance.
     /// </summary>
-    /// <param name="cancellationToken">Token used to cancel the operation.</param>
-    /// <returns>A task whose result is the requested box Open API Client.</returns>
+    /// <param name="cancellationToken">Token used to cancel client initialization.</param>
+    /// <returns>An authenticated Box OpenAPI client.</returns>
     ValueTask<BoxOpenApiClient> Get(CancellationToken cancellationToken = default);
 }

@@ -17,27 +17,31 @@ namespace Soenneker.Box.OpenApiClientUtil;
 /// <inheritdoc cref="IBoxOpenApiClientUtil"/>
 public sealed class BoxOpenApiClientUtil : IBoxOpenApiClientUtil
 {
-    private readonly AsyncSingleton<BoxOpenApiClient> _client;
+    private readonly AsyncSingleton<ClientState> _client;
 
     public BoxOpenApiClientUtil(IBoxOpenApiHttpClient httpClientUtil, IConfiguration configuration)
     {
-        _client = new AsyncSingleton<BoxOpenApiClient>(async token =>
+        _client = new AsyncSingleton<ClientState>(async token =>
         {
             HttpClient httpClient = await httpClientUtil.Get(token).NoSync();
 
             var apiKey = configuration.GetValueStrict<string>("Box:ApiKey");
+            string authHeaderName = configuration["Box:AuthHeaderName"] ?? "Authorization";
             string authHeaderValueTemplate = configuration["Box:AuthHeaderValueTemplate"] ?? "Bearer {token}";
             string authHeaderValue = authHeaderValueTemplate.Replace("{token}", apiKey, StringComparison.Ordinal);
 
-            var requestAdapter = new HttpClientRequestAdapter(new GenericAuthenticationProvider(headerValue: authHeaderValue), httpClient: httpClient);
+            var requestAdapter = new HttpClientRequestAdapter(
+                new GenericAuthenticationProvider(headerName: authHeaderName, headerValue: authHeaderValue),
+                httpClient: httpClient);
 
-            return new BoxOpenApiClient(requestAdapter);
+            return new ClientState(new BoxOpenApiClient(requestAdapter), requestAdapter);
         });
     }
 
-    public ValueTask<BoxOpenApiClient> Get(CancellationToken cancellationToken = default)
+    public async ValueTask<BoxOpenApiClient> Get(CancellationToken cancellationToken = default)
     {
-        return _client.Get(cancellationToken);
+        ClientState state = await _client.Get(cancellationToken).NoSync();
+        return state.Client;
     }
 
     /// <summary>
@@ -55,5 +59,23 @@ public sealed class BoxOpenApiClientUtil : IBoxOpenApiClientUtil
     public ValueTask DisposeAsync()
     {
         return _client.DisposeAsync();
+    }
+
+    private sealed class ClientState : IDisposable
+    {
+        private readonly HttpClientRequestAdapter _requestAdapter;
+
+        public BoxOpenApiClient Client { get; }
+
+        public ClientState(BoxOpenApiClient client, HttpClientRequestAdapter requestAdapter)
+        {
+            Client = client;
+            _requestAdapter = requestAdapter;
+        }
+
+        public void Dispose()
+        {
+            _requestAdapter.Dispose();
+        }
     }
 }

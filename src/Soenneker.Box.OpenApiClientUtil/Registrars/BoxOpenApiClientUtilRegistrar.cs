@@ -30,7 +30,7 @@ public static class BoxOpenApiClientUtilRegistrar
     /// <returns>The same service collection, so additional registrations can be chained.</returns>
     public static IServiceCollection AddBoxOpenApiClientUtilAsScoped(this IServiceCollection services)
     {
-        services.AddBoxOpenApiHttpClientAsSingleton()
+        services.AddBoxOpenApiHttpClientAsScoped()
                 .TryAddScoped<IBoxOpenApiClientUtil, BoxOpenApiClientUtil>();
 
         return services;
