@@ -43,6 +43,6 @@
     <ItemGroup>
         <PackageReference Include="Soenneker.Kiota.GenericAuthenticationProvider" Version="4.0.45" />
         <PackageReference Include="Soenneker.Box.HttpClients" Version="4.0.115" />
-        <PackageReference Include="Soenneker.Box.OpenApiClient" Version="4.0.48" />
+        <PackageReference Include="Soenneker.Box.OpenApiClient" Version="4.0.49" />
     </ItemGroup>
 </Project>
