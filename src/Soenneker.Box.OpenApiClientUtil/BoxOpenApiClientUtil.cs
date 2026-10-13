@@ -25,7 +25,7 @@ public sealed class BoxOpenApiClientUtil : IBoxOpenApiClientUtil
         {
             HttpClient httpClient = await httpClientUtil.Get(token).NoSync();
 
-            var apiKey = configuration.GetValueStrict<string>("Box:ApiKey");
+            var apiKey = configuration.GetStringStrict("Box:ApiKey");
             string authHeaderName = configuration["Box:AuthHeaderName"] ?? "Authorization";
             string authHeaderValueTemplate = configuration["Box:AuthHeaderValueTemplate"] ?? "Bearer {token}";
             string authHeaderValue = authHeaderValueTemplate.Replace("{token}", apiKey, StringComparison.Ordinal);
